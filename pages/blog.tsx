@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Link from 'next/link';
+import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
 import {
   FaBlog,
   FaCode,
@@ -155,25 +157,10 @@ const BlogPage = () => {
         />
       </Head>
 
-      <main className="min-h-screen bg-black text-white">
-        {/* Navigation */}
-        <nav className="fixed top-0 w-full bg-black/80 backdrop-blur-md z-50 border-b border-gray-800">
-          <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-            <Link
-              href="/"
-              className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600"
-            >
-              OffshoreFlow
-            </Link>
-            <Link
-              href="/contact"
-              className="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all"
-            >
-              無料カウンセリング
-            </Link>
-          </div>
-        </nav>
+      {/* Navigation */}
+      <Navigation />
 
+      <main className="min-h-screen bg-black text-white pt-16">
         {/* Hero Section */}
         <section className="pt-24 pb-12 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-orange-900/20" />
@@ -382,6 +369,9 @@ const BlogPage = () => {
           </div>
         </section>
       </main>
+
+      {/* Footer */}
+      <Footer />
     </>
   );
 };

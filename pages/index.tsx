@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
+import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
 import {
   FaRocket,
   FaCode,
@@ -60,7 +62,10 @@ const Home = () => {
         />
       </Head>
 
-      <main className="min-h-screen bg-black text-white overflow-x-hidden">
+      {/* Navigation */}
+      <Navigation />
+
+      <main className="min-h-screen bg-black text-white overflow-x-hidden pt-16">
         {/* Hero Section with Clear CTAs */}
         <section className="relative min-h-screen flex items-center justify-center">
           {/* Animated gradient background */}
@@ -250,13 +255,13 @@ const Home = () => {
                 >
                   フルデモ環境を体験 →
                 </a>
-                <a
+                <Link
                   href="/demo-video"
                   onClick={() => trackEvent('click', 'demo', 'video-demo')}
                   className="block bg-gray-800 hover:bg-gray-700 text-white rounded-lg p-4 transition-colors"
                 >
                   デモ動画を見る →
-                </a>
+                </Link>
               </div>
               <button
                 onClick={() => setShowDemo(false)}
@@ -537,14 +542,14 @@ const Home = () => {
 
             {/* Success Stories CTA */}
             <div className="text-center space-y-4">
-              <a
+              <Link
                 href="/success-stories"
                 onClick={() => trackEvent('click', 'cta', 'all-success-stories')}
                 className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
               >
                 <FaBook />
                 他の成功事例を見る
-              </a>
+              </Link>
               <div>
                 <motion.a
                   href="/contact"
@@ -681,14 +686,14 @@ const Home = () => {
             {/* Pricing Additional Info */}
             <div className="text-center space-y-4">
               <p className="text-gray-400">どのプランがいいか迷ってる？</p>
-              <a
+              <Link
                 href="/pricing-consultation"
                 onClick={() => trackEvent('click', 'cta', 'pricing-consultation')}
                 className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
               >
                 <FaLightbulb />
                 無料でプラン相談する
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -765,15 +770,25 @@ const Home = () => {
             {/* FAQ CTA */}
             <div className="text-center space-y-4">
               <p className="text-gray-400">解決しない疑問がある？</p>
-              <motion.a
-                href="/contact"
-                onClick={() => trackEvent('click', 'cta', 'faq')}
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold px-6 py-3 rounded-full hover:shadow-xl transition-all duration-300"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                直接質問する
-              </motion.a>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  href="/faq"
+                  onClick={() => trackEvent('click', 'cta', 'all-faqs')}
+                  className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+                >
+                  <FaBook />
+                  すべてのFAQを見る
+                </Link>
+                <motion.a
+                  href="/contact"
+                  onClick={() => trackEvent('click', 'cta', 'faq')}
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold px-6 py-3 rounded-full hover:shadow-xl transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  直接質問する
+                </motion.a>
+              </div>
             </div>
           </div>
         </section>
@@ -965,6 +980,9 @@ const Home = () => {
           </div>
         </section>
       </main>
+
+      {/* Footer */}
+      <Footer />
     </>
   );
 };
