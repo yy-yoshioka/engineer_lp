@@ -7,152 +7,155 @@ import {
   FaSun,
   FaBriefcase,
   FaGraduationCap,
-  FaHome,
   FaCheckCircle,
   FaArrowRight,
   FaCalendarAlt,
   FaChartLine,
-  FaLightbulb,
   FaRocket,
   FaCoffee,
   FaUsers,
+  FaLaptopCode,
+  FaBook,
 } from 'react-icons/fa';
 
-interface Schedule {
-  id: string;
-  title: string;
-  subtitle: string;
-  icon: React.ElementType;
-  totalHours: string;
-  difficulty: number;
-  timeline: {
-    time: string;
-    activity: string;
-    duration: string;
-    type: 'study' | 'practice' | 'review' | 'community';
-  }[];
-  weeklyHours: number;
-  pros: string[];
-  cons: string[];
-  bestFor: string;
-}
-
 const ScheduleExamplesPage = () => {
-  const [selectedSchedule, setSelectedSchedule] = useState('working');
+  const [selectedPattern, setSelectedPattern] = useState('fulltime');
 
-  const fadeInUp = {
-    initial: { opacity: 0, y: 40 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.5 },
-  };
-
-  const schedules: Record<string, Schedule> = {
-    working: {
-      id: 'working',
-      title: '働きながら学習プラン',
-      subtitle: '仕事と両立しながら着実にスキルアップ',
-      icon: FaBriefcase,
-      totalHours: '週15-20時間',
-      difficulty: 3,
-      timeline: [
-        { time: '6:00-7:00', activity: '朝活学習', duration: '1時間', type: 'study' },
-        { time: '7:00-9:00', activity: '通勤・準備', duration: '2時間', type: 'review' },
-        { time: '9:00-18:00', activity: '仕事', duration: '9時間', type: 'practice' },
-        { time: '12:00-13:00', activity: 'ランチタイム学習', duration: '30分', type: 'review' },
-        { time: '19:00-21:00', activity: 'メイン学習時間', duration: '2時間', type: 'practice' },
-        { time: '21:00-22:00', activity: 'コミュニティ活動', duration: '1時間', type: 'community' },
-      ],
-      weeklyHours: 20,
-      pros: [
-        '収入を維持しながら学習可能',
-        '実務経験を活かせる',
-        '転職リスクが低い',
-        '学習習慣が身につく',
-      ],
-      cons: ['学習時間の確保が大変', '体力的にきつい時がある', '進捗がゆっくり'],
-      bestFor: '現職を続けながら、着実にスキルアップしたい方',
-    },
-    student: {
-      id: 'student',
-      title: '学生向け集中プラン',
-      subtitle: '時間を最大限活用して最速成長',
-      icon: FaGraduationCap,
-      totalHours: '週30-40時間',
-      difficulty: 2,
-      timeline: [
-        { time: '9:00-12:00', activity: '午前の集中学習', duration: '3時間', type: 'study' },
-        { time: '12:00-13:00', activity: 'ランチ休憩', duration: '1時間', type: 'review' },
-        { time: '13:00-16:00', activity: '午後の実践学習', duration: '3時間', type: 'practice' },
-        { time: '16:00-17:00', activity: '休憩・運動', duration: '1時間', type: 'review' },
-        { time: '17:00-19:00', activity: 'プロジェクト開発', duration: '2時間', type: 'practice' },
+  const patterns = {
+    fulltime: {
+      name: 'フルタイム学習',
+      description: '1日8時間以上学習できる方',
+      duration: '3ヶ月で転職',
+      icon: FaRocket,
+      schedule: [
+        { time: '9:00-10:00', activity: '朝の学習準備・前日の復習', icon: FaCoffee, type: 'prep' },
+        { time: '10:00-12:00', activity: '講義動画視聴・基礎学習', icon: FaBook, type: 'study' },
+        { time: '12:00-13:00', activity: '昼休憩', icon: FaCoffee, type: 'break' },
         {
-          time: '20:00-22:00',
-          activity: 'コミュニティ・復習',
-          duration: '2時間',
-          type: 'community',
+          time: '13:00-15:00',
+          activity: 'ハンズオン・コーディング演習',
+          icon: FaLaptopCode,
+          type: 'coding',
         },
-      ],
-      weeklyHours: 35,
-      pros: [
-        'まとまった時間で集中学習',
-        '最速でスキル習得可能',
-        '同期と切磋琢磨できる',
-        '新卒エンジニアとして就職可能',
-      ],
-      cons: ['アルバイト収入が減る', '学業との両立が必要', '長時間学習で疲れやすい'],
-      bestFor: '時間に余裕がある学生・フリーターの方',
-    },
-    freelance: {
-      id: 'freelance',
-      title: 'フリーランス移行プラン',
-      subtitle: '副業から始めて独立を目指す',
-      icon: FaHome,
-      totalHours: '週25-30時間',
-      difficulty: 4,
-      timeline: [
-        { time: '5:00-7:00', activity: '早朝学習', duration: '2時間', type: 'study' },
-        { time: '9:00-12:00', activity: '既存案件作業', duration: '3時間', type: 'practice' },
-        { time: '13:00-15:00', activity: '新技術の学習', duration: '2時間', type: 'study' },
-        { time: '15:00-18:00', activity: '実践プロジェクト', duration: '3時間', type: 'practice' },
         {
-          time: '19:00-20:00',
-          activity: '営業・ネットワーキング',
-          duration: '1時間',
-          type: 'community',
+          time: '15:00-17:00',
+          activity: 'チーム開発・プロジェクト作業',
+          icon: FaUsers,
+          type: 'team',
+        },
+        { time: '17:00-18:00', activity: '夕休憩', icon: FaCoffee, type: 'break' },
+        {
+          time: '18:00-20:00',
+          activity: '個人開発・ポートフォリオ作成',
+          icon: FaLaptopCode,
+          type: 'coding',
         },
         {
           time: '20:00-21:00',
-          activity: 'ポートフォリオ作成',
-          duration: '1時間',
-          type: 'practice',
+          activity: '1日の振り返り・質問対応',
+          icon: FaCheckCircle,
+          type: 'review',
         },
       ],
-      weeklyHours: 28,
-      pros: [
-        '即収入につながるスキル習得',
-        '自分のペースで学習可能',
-        '実案件で経験を積める',
-        '将来的に独立可能',
+    },
+    working: {
+      name: '働きながら学習',
+      description: '仕事と両立しながら学習する方',
+      duration: '6ヶ月で転職',
+      icon: FaBriefcase,
+      schedule: [
+        { time: '6:00-7:00', activity: '朝活学習・基礎講義', icon: FaSun, type: 'study' },
+        { time: '7:00-9:00', activity: '通勤・朝の準備', icon: FaCoffee, type: 'break' },
+        { time: '9:00-18:00', activity: '仕事', icon: FaBriefcase, type: 'work' },
+        { time: '18:00-19:00', activity: '夕食・休憩', icon: FaCoffee, type: 'break' },
+        {
+          time: '19:00-21:00',
+          activity: 'コーディング演習・実践学習',
+          icon: FaLaptopCode,
+          type: 'coding',
+        },
+        {
+          time: '21:00-22:00',
+          activity: 'オンライン勉強会・質問対応',
+          icon: FaUsers,
+          type: 'team',
+        },
+        { time: '22:00-23:00', activity: '復習・翌日の準備', icon: FaBook, type: 'review' },
       ],
-      cons: ['自己管理能力が必要', '収入が不安定になる可能性', '営業活動も必要'],
-      bestFor: 'フリーランスエンジニアを目指す方',
+    },
+    student: {
+      name: '学生の学習',
+      description: '大学と両立しながら学習する方',
+      duration: '4ヶ月で内定',
+      icon: FaGraduationCap,
+      schedule: [
+        { time: '8:00-12:00', activity: '大学の授業', icon: FaGraduationCap, type: 'work' },
+        { time: '12:00-13:00', activity: '昼休憩', icon: FaCoffee, type: 'break' },
+        { time: '13:00-15:00', activity: '講義動画視聴・基礎学習', icon: FaBook, type: 'study' },
+        { time: '15:00-17:00', activity: 'プログラミング演習', icon: FaLaptopCode, type: 'coding' },
+        { time: '17:00-18:00', activity: '休憩・夕食', icon: FaCoffee, type: 'break' },
+        {
+          time: '18:00-20:00',
+          activity: 'チーム開発・グループワーク',
+          icon: FaUsers,
+          type: 'team',
+        },
+        {
+          time: '20:00-22:00',
+          activity: '個人プロジェクト・ポートフォリオ',
+          icon: FaLaptopCode,
+          type: 'coding',
+        },
+        { time: '22:00-23:00', activity: '復習・質問まとめ', icon: FaCheckCircle, type: 'review' },
+      ],
     },
   };
 
-  const currentSchedule = schedules[selectedSchedule];
+  const weeklyMilestones = [
+    {
+      week: '1-2週目',
+      title: 'プログラミング基礎',
+      tasks: ['HTML/CSS基礎', 'JavaScript基礎', 'Git/GitHub入門'],
+    },
+    {
+      week: '3-4週目',
+      title: 'フロントエンド基礎',
+      tasks: ['React基礎', 'コンポーネント設計', '状態管理'],
+    },
+    {
+      week: '5-6週目',
+      title: 'バックエンド基礎',
+      tasks: ['Node.js/Express', 'データベース基礎', 'API設計'],
+    },
+    {
+      week: '7-8週目',
+      title: '実践プロジェクト',
+      tasks: ['チーム開発開始', 'プロジェクト設計', '実装・テスト'],
+    },
+    {
+      week: '9-10週目',
+      title: 'ポートフォリオ作成',
+      tasks: ['個人プロジェクト', 'デプロイ', 'ドキュメント作成'],
+    },
+    { week: '11-12週目', title: '転職活動', tasks: ['履歴書作成', '面接対策', '企業研究'] },
+  ];
 
   const getActivityColor = (type: string) => {
     switch (type) {
       case 'study':
-        return 'bg-blue-500';
-      case 'practice':
-        return 'bg-green-500';
+        return 'from-blue-600 to-cyan-600';
+      case 'coding':
+        return 'from-purple-600 to-pink-600';
+      case 'team':
+        return 'from-green-600 to-emerald-600';
       case 'review':
-        return 'bg-yellow-500';
-      case 'community':
-        return 'bg-purple-500';
+        return 'from-orange-600 to-yellow-600';
+      case 'work':
+        return 'from-gray-600 to-gray-700';
+      case 'break':
+        return 'from-gray-700 to-gray-800';
       default:
-        return 'bg-gray-500';
+        return 'from-gray-600 to-gray-700';
     }
   };
 
@@ -162,7 +165,7 @@ const ScheduleExamplesPage = () => {
         <title>学習スケジュール例 - OffshoreFlow</title>
         <meta
           name="description"
-          content="OffshoreFlowの学習スケジュール例。働きながら、学生、フリーランス向けなど、ライフスタイルに合わせた学習プラン。"
+          content="OffshoreFlowの学習スケジュール例。フルタイム、働きながら、学生など、様々なライフスタイルに合わせた学習プランをご紹介。"
         />
       </Head>
 
@@ -178,322 +181,154 @@ const ScheduleExamplesPage = () => {
             </Link>
             <Link
               href="/contact"
-              className="bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full text-sm font-semibold hover:shadow-lg transition-all"
+              className="bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all"
             >
-              無料相談
+              無料カウンセリング
             </Link>
           </div>
         </nav>
 
         {/* Hero Section */}
-        <section className="pt-24 pb-20 relative overflow-hidden">
+        <section className="pt-24 pb-12 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-orange-900/20" />
 
           <div className="relative container mx-auto px-4">
             <motion.div
-              initial="initial"
-              animate="animate"
-              variants={fadeInUp}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
               className="text-center max-w-4xl mx-auto"
             >
-              <div className="inline-flex items-center gap-2 bg-purple-900/30 backdrop-blur px-4 py-2 rounded-full border border-purple-500/30 mb-6">
-                <FaClock className="text-purple-400" />
-                <span className="text-sm">ライフスタイルに合わせた学習</span>
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl mb-6">
+                <FaCalendarAlt className="text-4xl" />
               </div>
-
-              <h1 className="text-5xl md:text-7xl font-black mb-6">
+              <h1 className="text-4xl md:text-6xl font-black mb-6">
                 学習
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-                  スケジュール
+                  スケジュール例
                 </span>
-                例
               </h1>
-
-              <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-                あなたのライフスタイルに合わせた
-                <br />
-                最適な学習プランを見つけよう
-              </p>
+              <p className="text-xl text-gray-300">あなたのライフスタイルに合わせた学習プラン</p>
             </motion.div>
           </div>
         </section>
 
-        {/* Schedule Selector */}
-        <section className="py-16 bg-gray-900/50">
+        {/* Pattern Selection */}
+        <section className="py-8">
           <div className="container mx-auto px-4">
-            <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true }}
-              variants={fadeInUp}
-              className="text-center mb-12"
-            >
-              <h2 className="text-3xl font-bold mb-4">あなたはどのタイプ？</h2>
-              <p className="text-gray-400">該当するライフスタイルを選択してください</p>
-            </motion.div>
-
-            <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              {Object.values(schedules).map((schedule, index) => (
+            <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
+              {Object.entries(patterns).map(([key, pattern]) => (
                 <motion.button
-                  key={schedule.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  onClick={() => setSelectedSchedule(schedule.id)}
-                  className={`p-6 rounded-2xl border-2 transition-all text-left ${
-                    selectedSchedule === schedule.id
-                      ? 'bg-gradient-to-br from-purple-900/50 to-pink-900/50 border-purple-500'
-                      : 'bg-gray-800 border-gray-700 hover:border-gray-600'
+                  key={key}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setSelectedPattern(key)}
+                  className={`px-6 py-4 rounded-xl font-semibold transition-all ${
+                    selectedPattern === key
+                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 shadow-lg'
+                      : 'bg-gray-800 hover:bg-gray-700'
                   }`}
                 >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${
-                        selectedSchedule === schedule.id
-                          ? 'bg-gradient-to-br from-purple-600 to-pink-600'
-                          : 'bg-gray-700'
-                      }`}
-                    >
-                      <schedule.icon className="text-xl" />
-                    </div>
-                    <div className="flex-grow">
-                      <h3 className="font-bold text-lg mb-1">{schedule.title}</h3>
-                      <p className="text-sm text-gray-400 mb-2">{schedule.subtitle}</p>
-                      <p className="text-sm font-semibold text-purple-400">{schedule.totalHours}</p>
-                    </div>
-                  </div>
+                  <pattern.icon className="inline mr-2" />
+                  {pattern.name}
                 </motion.button>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Schedule Details */}
+        {/* Selected Schedule */}
         <section className="py-16">
           <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <motion.div
-                key={currentSchedule.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                {/* Schedule Header */}
-                <div className="text-center mb-12">
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4">{currentSchedule.title}</h2>
-                  <p className="text-xl text-gray-400">{currentSchedule.subtitle}</p>
+            <motion.div
+              key={selectedPattern}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="max-w-5xl mx-auto"
+            >
+              {/* Pattern Info */}
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold mb-4">
+                  {patterns[selectedPattern as keyof typeof patterns].name}
+                </h2>
+                <p className="text-gray-400 mb-4">
+                  {patterns[selectedPattern as keyof typeof patterns].description}
+                </p>
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 px-4 py-2 rounded-full text-sm font-bold">
+                  <FaClock />
+                  {patterns[selectedPattern as keyof typeof patterns].duration}
                 </div>
+              </div>
 
-                {/* Daily Timeline */}
-                <div className="bg-gray-800 rounded-3xl p-8 border border-gray-700 mb-12">
-                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">
-                    <FaCalendarAlt className="text-purple-400" />
-                    1日のスケジュール例
-                  </h3>
-
-                  <div className="space-y-4">
-                    {currentSchedule.timeline.map((item, index) => (
+              {/* Daily Schedule */}
+              <div className="bg-gray-900/50 rounded-2xl p-8">
+                <h3 className="text-2xl font-bold mb-8 text-center">1日のスケジュール例</h3>
+                <div className="space-y-4">
+                  {patterns[selectedPattern as keyof typeof patterns].schedule.map(
+                    (item, index) => (
                       <motion.div
                         key={index}
-                        initial={{ opacity: 0, x: -30 }}
+                        initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="flex items-center gap-4 p-4 bg-gray-900 rounded-xl"
+                        className="flex items-center gap-4"
                       >
-                        <div className="text-lg font-bold text-purple-400 w-28 flex-shrink-0">
-                          {item.time}
+                        <div className="flex-shrink-0 w-24 text-right">
+                          <span className="text-sm text-gray-400">{item.time}</span>
                         </div>
-                        <div className="flex-grow">
-                          <div className="flex items-center gap-3">
-                            <h4 className="font-semibold">{item.activity}</h4>
-                            <span className="text-sm text-gray-400">({item.duration})</span>
-                          </div>
-                        </div>
-                        <div className={`w-3 h-3 rounded-full ${getActivityColor(item.type)}`} />
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  {/* Legend */}
-                  <div className="mt-6 flex flex-wrap gap-4 text-sm">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-blue-500" />
-                      <span className="text-gray-400">理論学習</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-green-500" />
-                      <span className="text-gray-400">実践・開発</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                      <span className="text-gray-400">復習・休憩</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-purple-500" />
-                      <span className="text-gray-400">コミュニティ</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Weekly Summary */}
-                <div className="grid md:grid-cols-3 gap-6 mb-12">
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="bg-gray-800 rounded-2xl p-6 border border-gray-700 text-center"
-                  >
-                    <FaClock className="text-3xl text-purple-400 mb-3 mx-auto" />
-                    <h3 className="text-3xl font-bold mb-1">{currentSchedule.weeklyHours}時間</h3>
-                    <p className="text-gray-400">週間学習時間</p>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 }}
-                    className="bg-gray-800 rounded-2xl p-6 border border-gray-700 text-center"
-                  >
-                    <FaChartLine className="text-3xl text-green-400 mb-3 mx-auto" />
-                    <h3 className="text-3xl font-bold mb-1">3ヶ月</h3>
-                    <p className="text-gray-400">転職までの期間</p>
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 }}
-                    className="bg-gray-800 rounded-2xl p-6 border border-gray-700 text-center"
-                  >
-                    <FaLightbulb className="text-3xl text-yellow-400 mb-3 mx-auto" />
-                    <h3 className="text-lg font-bold mb-1">難易度</h3>
-                    <div className="flex justify-center gap-1">
-                      {[...Array(5)].map((_, i) => (
                         <div
-                          key={i}
-                          className={`w-2 h-6 rounded ${
-                            i < currentSchedule.difficulty ? 'bg-yellow-400' : 'bg-gray-700'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </motion.div>
+                          className={`flex-1 bg-gradient-to-r ${getActivityColor(item.type)} p-4 rounded-xl flex items-center gap-3`}
+                        >
+                          <item.icon className="text-xl flex-shrink-0" />
+                          <span className="font-semibold">{item.activity}</span>
+                        </div>
+                      </motion.div>
+                    )
+                  )}
                 </div>
-
-                {/* Pros and Cons */}
-                <div className="grid md:grid-cols-2 gap-8 mb-12">
-                  {/* Pros */}
-                  <motion.div
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    className="bg-gradient-to-br from-green-900/30 to-emerald-900/30 rounded-2xl p-8 border border-green-500/30"
-                  >
-                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                      <FaCheckCircle className="text-green-400" />
-                      メリット
-                    </h3>
-                    <ul className="space-y-3">
-                      {currentSchedule.pros.map((pro, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <FaCheckCircle className="text-green-400 mt-1 flex-shrink-0" />
-                          <span className="text-gray-300">{pro}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.div>
-
-                  {/* Cons */}
-                  <motion.div
-                    initial={{ opacity: 0, x: 30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    className="bg-gradient-to-br from-orange-900/30 to-red-900/30 rounded-2xl p-8 border border-orange-500/30"
-                  >
-                    <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                      <FaLightbulb className="text-orange-400" />
-                      注意点
-                    </h3>
-                    <ul className="space-y-3">
-                      {currentSchedule.cons.map((con, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                          <FaLightbulb className="text-orange-400 mt-1 flex-shrink-0" />
-                          <span className="text-gray-300">{con}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </motion.div>
-                </div>
-
-                {/* Best For */}
-                <div className="bg-gradient-to-r from-purple-900/50 to-pink-900/50 rounded-3xl p-8 border border-purple-500/30 text-center">
-                  <h3 className="text-2xl font-bold mb-4">こんな方におすすめ</h3>
-                  <p className="text-xl text-gray-300">{currentSchedule.bestFor}</p>
-                </div>
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
           </div>
         </section>
 
-        {/* Tips Section */}
+        {/* Weekly Milestones */}
         <section className="py-16 bg-gray-900/50">
           <div className="container mx-auto px-4">
             <motion.div
-              initial="initial"
-              whileInView="animate"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              variants={fadeInUp}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                効率的に学習する
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-600">
-                  ポイント
-                </span>
-              </h2>
+              <h2 className="text-3xl font-bold mb-4">12週間の学習マイルストーン</h2>
+              <p className="text-gray-400">段階的にスキルを習得していきます</p>
             </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {[
-                {
-                  icon: FaSun,
-                  title: '朝活のススメ',
-                  desc: '朝の1時間は夜の3時間に匹敵。集中力が高い朝に難しい内容を学習しよう。',
-                  tips: ['毎日同じ時間に起床', 'コーヒーで覚醒', '前日に準備を完了'],
-                },
-                {
-                  icon: FaCoffee,
-                  title: 'スキマ時間活用',
-                  desc: '通勤時間やランチタイムも有効活用。動画講義や記事を読んで知識をインプット。',
-                  tips: ['スマホで学習環境構築', '音声教材を活用', '5分でも積み重ね'],
-                },
-                {
-                  icon: FaUsers,
-                  title: 'コミュニティ参加',
-                  desc: '一人で悩まない。Discordで質問したり、同期と励まし合って継続力UP。',
-                  tips: ['毎日ログイン習慣', '積極的に質問', 'アウトプットを共有'],
-                },
-              ].map((tip, index) => (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              {weeklyMilestones.map((milestone, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 50 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-gray-800 rounded-3xl p-8 border border-gray-700"
+                  className="bg-gray-800 rounded-2xl p-6"
                 >
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-2xl mb-6">
-                    <tip.icon className="text-2xl" />
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center font-bold text-sm">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <span className="text-sm text-purple-400">{milestone.week}</span>
+                      <h3 className="text-lg font-bold">{milestone.title}</h3>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold mb-4">{tip.title}</h3>
-                  <p className="text-gray-400 mb-6">{tip.desc}</p>
                   <ul className="space-y-2">
-                    {tip.tips.map((item, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-gray-300">
-                        <FaCheckCircle className="text-green-400 flex-shrink-0" />
-                        {item}
+                    {milestone.tasks.map((task, taskIndex) => (
+                      <li key={taskIndex} className="flex items-start gap-2 text-sm text-gray-300">
+                        <FaCheckCircle className="text-green-400 mt-0.5 flex-shrink-0" />
+                        <span>{task}</span>
                       </li>
                     ))}
                   </ul>
@@ -503,49 +338,88 @@ const ScheduleExamplesPage = () => {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-24 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/30 via-pink-900/30 to-orange-900/30" />
-
-          <div className="relative container mx-auto px-4 text-center">
+        {/* Study Tips */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl font-bold mb-4">効率的な学習のコツ</h2>
+              <p className="text-gray-400">学習効果を最大化するためのアドバイス</p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              {[
+                {
+                  title: '毎日コードを書く',
+                  description: '短時間でも毎日コードを書くことで、プログラミング思考が身につきます',
+                  icon: FaLaptopCode,
+                },
+                {
+                  title: 'アウトプット重視',
+                  description: '学んだことをすぐに実践し、アウトプットすることで定着率が向上します',
+                  icon: FaChartLine,
+                },
+                {
+                  title: '仲間と学ぶ',
+                  description:
+                    '同期や先輩エンジニアと交流することで、モチベーション維持につながります',
+                  icon: FaUsers,
+                },
+                {
+                  title: '定期的な振り返り',
+                  description: '週単位で学習内容を振り返り、理解度を確認することが重要です',
+                  icon: FaCheckCircle,
+                },
+              ].map((tip, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-8 border border-gray-700"
+                >
+                  <tip.icon className="text-4xl text-purple-400 mb-4" />
+                  <h3 className="text-xl font-bold mb-3">{tip.title}</h3>
+                  <p className="text-gray-300">{tip.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-20 bg-gradient-to-br from-purple-900/20 to-pink-900/20">
+          <div className="container mx-auto px-4 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-5xl font-bold mb-6">
-                あなたに最適な
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-                  学習プラン
-                </span>
-                を作ろう
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                あなたに合った学習プランを見つけよう
               </h2>
-              <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-                無料カウンセリングで、あなたの状況に合わせた
-                <br />
-                オーダーメイドの学習計画をご提案します。
+              <p className="text-xl text-gray-300 mb-8">
+                無料カウンセリングで、最適な学習スケジュールをご提案します
               </p>
-
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <motion.a
+                <Link
                   href="/contact"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/25 transition-all"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 px-8 py-4 rounded-full font-semibold text-lg hover:shadow-lg transition-all"
                 >
-                  無料カウンセリングで相談
-                  <FaRocket />
-                </motion.a>
-                <motion.a
-                  href="/curriculum"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-8 py-4 rounded-full font-bold text-lg border border-white/20 hover:bg-white/20 transition-all"
-                >
-                  カリキュラム詳細
+                  無料カウンセリングを予約
                   <FaArrowRight />
-                </motion.a>
+                </Link>
+                <Link
+                  href="/pricing-consultation"
+                  className="inline-flex items-center gap-2 bg-gray-800 px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-700 transition-all"
+                >
+                  プラン診断を受ける
+                </Link>
               </div>
             </motion.div>
           </div>
