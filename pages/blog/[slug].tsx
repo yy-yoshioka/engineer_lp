@@ -66,11 +66,12 @@ export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) 
           <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-pink-900/20 to-orange-900/20" />
 
           <div className="relative container mx-auto px-4">
-            <Link href="/blog">
-              <a className="inline-flex items-center text-purple-400 hover:text-purple-300 mb-6 transition-colors">
-                <FaArrowLeft className="mr-2" />
-                ブログ一覧に戻る
-              </a>
+            <Link
+              href="/blog"
+              className="inline-flex items-center text-purple-400 hover:text-purple-300 mb-6 transition-colors"
+            >
+              <FaArrowLeft className="mr-2" />
+              ブログ一覧に戻る
             </Link>
 
             {post.thumbnail && (
@@ -121,11 +122,13 @@ export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) 
 
               <div className="flex flex-wrap gap-2 mb-8">
                 {post.tags.map((tag) => (
-                  <Link key={tag} href={`/blog/tag/${encodeURIComponent(tag)}`}>
-                    <a className="inline-flex items-center px-3 py-1 rounded-full bg-gray-800 text-gray-300 text-sm hover:bg-gray-700 transition-colors">
-                      <FaTag className="mr-1 text-xs" />
-                      {tag}
-                    </a>
+                  <Link
+                    key={tag}
+                    href={`/blog/tag/${encodeURIComponent(tag)}`}
+                    className="inline-flex items-center px-3 py-1 rounded-full bg-gray-800 text-gray-300 text-sm hover:bg-gray-700 transition-colors"
+                  >
+                    <FaTag className="mr-1 text-xs" />
+                    {tag}
                   </Link>
                 ))}
               </div>
@@ -145,18 +148,7 @@ export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) 
               >
                 {/* Blog Content */}
                 <div
-                  className="prose prose-lg prose-invert max-w-none
-                    prose-headings:text-white prose-headings:font-bold
-                    prose-h2:text-3xl prose-h2:mt-8 prose-h2:mb-4
-                    prose-h3:text-2xl prose-h3:mt-6 prose-h3:mb-3
-                    prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-4
-                    prose-a:text-purple-400 prose-a:no-underline hover:prose-a:text-purple-300
-                    prose-ul:list-disc prose-ul:ml-6 prose-ul:text-gray-300
-                    prose-ol:list-decimal prose-ol:ml-6 prose-ol:text-gray-300
-                    prose-li:mb-2
-                    prose-code:bg-gray-900 prose-code:text-purple-400 prose-code:px-2 prose-code:py-1 prose-code:rounded
-                    prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-700
-                    prose-blockquote:border-l-4 prose-blockquote:border-purple-500 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-400"
+                  className="markdown-content max-w-none"
                   dangerouslySetInnerHTML={{ __html: post.content || '' }}
                 />
 
@@ -205,40 +197,40 @@ export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) 
                   <h2 className="text-3xl font-bold text-white mb-8">関連記事</h2>
                   <div className="grid md:grid-cols-3 gap-6">
                     {relatedPosts.map((relatedPost) => (
-                      <Link key={relatedPost.slug} href={`/blog/${relatedPost.slug}`}>
-                        <a className="group">
-                          <article className="bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden hover:bg-gray-800/70 transition-all duration-300 h-full">
-                            {relatedPost.thumbnail && (
-                              <div className="relative h-48 overflow-hidden">
-                                <Image
-                                  src={relatedPost.thumbnail}
-                                  alt={relatedPost.title}
-                                  layout="fill"
-                                  objectFit="cover"
-                                  className="group-hover:scale-105 transition-transform duration-300"
-                                />
-                              </div>
-                            )}
-                            <div className="p-6">
-                              <span className="inline-block px-3 py-1 text-xs rounded-full bg-purple-900/50 text-purple-300 mb-3">
-                                {relatedPost.category}
-                              </span>
-                              <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-purple-400 transition-colors line-clamp-2">
-                                {relatedPost.title}
-                              </h3>
-                              <p className="text-gray-400 text-sm line-clamp-3 mb-3">
-                                {relatedPost.excerpt}
-                              </p>
-                              <div className="flex items-center text-xs text-gray-500">
-                                <span>
-                                  {new Date(relatedPost.date).toLocaleDateString('ja-JP')}
-                                </span>
-                                <span className="mx-2">•</span>
-                                <span>{relatedPost.readingTime}</span>
-                              </div>
+                      <Link
+                        key={relatedPost.slug}
+                        href={`/blog/${relatedPost.slug}`}
+                        className="group"
+                      >
+                        <article className="bg-gray-800/50 backdrop-blur-sm rounded-xl overflow-hidden hover:bg-gray-800/70 transition-all duration-300 h-full">
+                          {relatedPost.thumbnail && (
+                            <div className="relative h-48 overflow-hidden">
+                              <Image
+                                src={relatedPost.thumbnail}
+                                alt={relatedPost.title}
+                                layout="fill"
+                                objectFit="cover"
+                                className="group-hover:scale-105 transition-transform duration-300"
+                              />
                             </div>
-                          </article>
-                        </a>
+                          )}
+                          <div className="p-6">
+                            <span className="inline-block px-3 py-1 text-xs rounded-full bg-purple-900/50 text-purple-300 mb-3">
+                              {relatedPost.category}
+                            </span>
+                            <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-purple-400 transition-colors line-clamp-2">
+                              {relatedPost.title}
+                            </h3>
+                            <p className="text-gray-400 text-sm line-clamp-3 mb-3">
+                              {relatedPost.excerpt}
+                            </p>
+                            <div className="flex items-center text-xs text-gray-500">
+                              <span>{new Date(relatedPost.date).toLocaleDateString('ja-JP')}</span>
+                              <span className="mx-2">•</span>
+                              <span>{relatedPost.readingTime}</span>
+                            </div>
+                          </div>
+                        </article>
                       </Link>
                     ))}
                   </div>

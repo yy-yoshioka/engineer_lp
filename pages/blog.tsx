@@ -175,11 +175,12 @@ const BlogPage = ({ posts }: BlogPageProps) => {
                           </span>
                         ))}
                       </div>
-                      <Link href={`/blog/${post.slug}`}>
-                        <a className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
-                          続きを読む
-                          <FaArrowRight />
-                        </a>
+                      <Link
+                        href={`/blog/${post.slug}`}
+                        className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+                      >
+                        続きを読む
+                        <FaArrowRight />
                       </Link>
                     </div>
                   </motion.article>
@@ -240,10 +241,11 @@ const BlogPage = ({ posts }: BlogPageProps) => {
                           <span className="text-xs text-gray-500">
                             {new Date(post.date).toLocaleDateString('ja-JP')}
                           </span>
-                          <Link href={`/blog/${post.slug}`}>
-                            <a className="text-purple-400 hover:text-purple-300 transition-colors">
-                              <FaArrowRight />
-                            </a>
+                          <Link
+                            href={`/blog/${post.slug}`}
+                            className="text-purple-400 hover:text-purple-300 transition-colors"
+                          >
+                            <FaArrowRight />
                           </Link>
                         </div>
                       </div>
