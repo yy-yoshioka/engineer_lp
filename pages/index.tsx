@@ -1,7 +1,9 @@
 // pages/index.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Head from 'next/head';
+import Link from 'next/link';
+import Image from 'next/image';
 import {
   FaRocket,
   FaCode,
@@ -14,13 +16,20 @@ import {
   FaGithub,
   FaTwitter,
   FaDiscord,
-  FaUsers,
   FaFire,
   FaHeart,
-  FaGamepad,
+  FaYoutube,
+  FaPlay,
+  FaArrowRight,
+  FaBook,
+  FaLightbulb,
+  FaDownload,
+  FaComments,
 } from 'react-icons/fa';
 
 const Home = () => {
+  const [showDemo, setShowDemo] = useState(false);
+
   const fadeInUp = {
     initial: { opacity: 0, y: 40 },
     animate: { opacity: 1, y: 0 },
@@ -35,6 +44,12 @@ const Home = () => {
     },
   };
 
+  // GTM/GA用のイベントトラッキング（実装時に使用）
+  const trackEvent = (action: string, category: string, label?: string) => {
+    // Google Analytics tracking code here
+    console.log('Track:', { action, category, label });
+  };
+
   return (
     <>
       <Head>
@@ -46,7 +61,7 @@ const Home = () => {
       </Head>
 
       <main className="min-h-screen bg-black text-white overflow-x-hidden">
-        {/* Hero Section with Gradient Background */}
+        {/* Hero Section with Clear CTAs */}
         <section className="relative min-h-screen flex items-center justify-center">
           {/* Animated gradient background */}
           <div className="absolute inset-0">
@@ -97,14 +112,17 @@ const Home = () => {
               オフショア開発 × 最新技術で最速キャリアチェンジ
             </motion.p>
 
+            {/* Main and Sub CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
+              className="flex flex-col sm:flex-row gap-4 justify-center mb-8"
             >
+              {/* Main CTA */}
               <motion.a
-                href="#cta"
+                href="/contact"
+                onClick={() => trackEvent('click', 'cta', 'hero-main')}
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold px-8 py-4 rounded-full hover:shadow-2xl hover:shadow-purple-500/25 transform hover:scale-105 transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -112,22 +130,67 @@ const Home = () => {
                 無料カウンセリング予約
                 <FaRocket />
               </motion.a>
-              <motion.a
-                href="#program"
+
+              {/* Sub CTAs */}
+              <motion.button
+                onClick={() => {
+                  setShowDemo(true);
+                  trackEvent('click', 'cta', 'hero-demo');
+                }}
                 className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-white font-bold px-8 py-4 rounded-full border border-white/20 hover:bg-white/20 transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                まずは詳細を見る
-              </motion.a>
+                <FaPlay className="text-sm" />
+                デモを体験
+              </motion.button>
+            </motion.div>
+
+            {/* Additional Sub CTAs */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="flex items-center justify-center gap-4 text-sm"
+            >
+              <Link
+                href="/download-guide"
+                onClick={() => trackEvent('click', 'cta', 'hero-download')}
+                className="hover:text-purple-400 transition-colors flex items-center gap-1"
+              >
+                <FaDownload />
+                無料ガイドブック
+              </Link>
+              <span className="text-gray-500">|</span>
+              <a
+                href="https://discord.gg/offshoreflow"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackEvent('click', 'cta', 'hero-community')}
+                className="hover:text-purple-400 transition-colors flex items-center gap-1"
+              >
+                <FaDiscord />
+                コミュニティ参加
+              </a>
+              <span className="text-gray-500">|</span>
+              <a
+                href="https://youtube.com/@offshoreflow"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackEvent('click', 'cta', 'hero-youtube')}
+                className="hover:text-purple-400 transition-colors flex items-center gap-1"
+              >
+                <FaYoutube />
+                解説動画
+              </a>
             </motion.div>
 
             {/* Social proof */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="flex items-center justify-center gap-8 text-sm"
+              transition={{ delay: 0.6 }}
+              className="flex items-center justify-center gap-8 text-sm mt-12"
             >
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-2">
@@ -165,7 +228,47 @@ const Home = () => {
           </motion.div>
         </section>
 
-        {/* Stats Section */}
+        {/* Demo Modal (簡易実装) */}
+        {showDemo && (
+          <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="bg-gray-900 rounded-2xl p-8 max-w-2xl w-full"
+            >
+              <h3 className="text-2xl font-bold mb-4">デモ体験</h3>
+              <p className="text-gray-400 mb-6">
+                実際の開発環境を体験できます。以下からお選びください：
+              </p>
+              <div className="space-y-4">
+                <a
+                  href="https://demo.offshoreflow.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent('click', 'demo', 'full-demo')}
+                  className="block bg-purple-600 hover:bg-purple-700 text-white rounded-lg p-4 transition-colors"
+                >
+                  フルデモ環境を体験 →
+                </a>
+                <a
+                  href="/demo-video"
+                  onClick={() => trackEvent('click', 'demo', 'video-demo')}
+                  className="block bg-gray-800 hover:bg-gray-700 text-white rounded-lg p-4 transition-colors"
+                >
+                  デモ動画を見る →
+                </a>
+              </div>
+              <button
+                onClick={() => setShowDemo(false)}
+                className="mt-6 text-gray-400 hover:text-white transition-colors"
+              >
+                閉じる
+              </button>
+            </motion.div>
+          </div>
+        )}
+
+        {/* Stats Section - Quick Trust Building */}
         <section className="py-16 bg-gradient-to-b from-black to-gray-900">
           <div className="container mx-auto px-4">
             <motion.div
@@ -195,7 +298,7 @@ const Home = () => {
           </div>
         </section>
 
-        {/* What is OffshoreFlow */}
+        {/* What is OffshoreFlow - with Service Details */}
         <section id="program" className="py-20 bg-gray-900">
           <div className="container mx-auto px-4">
             <motion.div
@@ -220,24 +323,27 @@ const Home = () => {
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-12">
               {[
                 {
                   icon: FaCode,
                   title: '実務レベルの開発',
                   desc: '教科書じゃなくて、実際のプロダクト開発を通して学ぶ',
+                  link: '/services/practical-development',
                   color: 'from-blue-500 to-cyan-500',
                 },
                 {
                   icon: FaGlobeAmericas,
                   title: 'グローバル体験',
                   desc: 'ベトナム・インドのエンジニアと英語でコミュニケーション',
+                  link: '/services/global-experience',
                   color: 'from-green-500 to-emerald-500',
                 },
                 {
                   icon: FaUserGraduate,
                   title: '転職サポート',
                   desc: '履歴書添削から面接対策、企業紹介まで完全バックアップ',
+                  link: '/services/career-support',
                   color: 'from-purple-500 to-pink-500',
                 },
               ].map((item, index) => (
@@ -255,22 +361,42 @@ const Home = () => {
                       background: `linear-gradient(135deg, ${item.color.split(' ')[1]}, ${item.color.split(' ')[3]})`,
                     }}
                   />
-                  <div className="relative bg-gray-800 rounded-3xl p-8 border border-gray-700 hover:border-transparent transition-all duration-300">
+                  <div className="relative bg-gray-800 rounded-3xl p-8 border border-gray-700 hover:border-transparent transition-all duration-300 h-full flex flex-col">
                     <div
                       className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br ${item.color} rounded-2xl mb-6`}
                     >
                       <item.icon className="text-2xl" />
                     </div>
                     <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
-                    <p className="text-gray-400">{item.desc}</p>
+                    <p className="text-gray-400 mb-6 flex-grow">{item.desc}</p>
+                    <a
+                      href={item.link}
+                      onClick={() => trackEvent('click', 'service-detail', item.title)}
+                      className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+                    >
+                      詳しく見る <FaArrowRight className="text-sm" />
+                    </a>
                   </div>
                 </motion.div>
               ))}
             </div>
+
+            {/* Program Overview CTA */}
+            <div className="text-center">
+              <motion.a
+                href="/contact"
+                onClick={() => trackEvent('click', 'cta', 'program-overview')}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold px-6 py-3 rounded-full hover:shadow-xl transition-all duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                プログラムについて相談する
+              </motion.a>
+            </div>
           </div>
         </section>
 
-        {/* Why Choose Us */}
+        {/* Video Introduction Section */}
         <section className="py-20 bg-black">
           <div className="container mx-auto px-4">
             <motion.div
@@ -278,186 +404,55 @@ const Home = () => {
               whileInView="animate"
               viewport={{ once: true }}
               variants={fadeInUp}
-              className="text-center mb-16"
+              className="text-center mb-12"
             >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                なんで
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                動画で分かる
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-600">
                   OffshoreFlow
                 </span>
-                なの？
               </h2>
-            </motion.div>
-
-            <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="space-y-6"
-              >
-                {[
-                  {
-                    icon: FaFire,
-                    title: '爆速成長',
-                    desc: '3ヶ月で0→100。独学の10倍速で成長できる環境',
-                  },
-                  {
-                    icon: FaGamepad,
-                    title: '楽しく学べる',
-                    desc: 'ゲーム感覚のカリキュラムで挫折知らず',
-                  },
-                  {
-                    icon: FaUsers,
-                    title: '仲間ができる',
-                    desc: '同期や先輩エンジニアとDiscordで24時間繋がれる',
-                  },
-                  {
-                    icon: FaBriefcase,
-                    title: '転職保証',
-                    desc: '転職できなかったら全額返金※条件あり',
-                  },
-                ].map((item, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    className="flex items-start gap-4 group"
-                  >
-                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <item.icon className="text-xl" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                      <p className="text-gray-400">{item.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="relative"
-              >
-                <div className="relative bg-gradient-to-br from-purple-900/50 to-pink-900/50 rounded-3xl p-8 backdrop-blur-sm border border-purple-500/20">
-                  <div className="absolute -top-4 -right-4 bg-gradient-to-r from-yellow-400 to-orange-600 text-black text-sm font-bold px-4 py-2 rounded-full">
-                    期間限定！
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4">今だけの特典 🎁</h3>
-                  <ul className="space-y-3">
-                    <li className="flex items-center gap-2">
-                      <FaCheckCircle className="text-green-400" />
-                      <span>MacBook Pro レンタル無料</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <FaCheckCircle className="text-green-400" />
-                      <span>AWS・GitHub有料プラン無料</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <FaCheckCircle className="text-green-400" />
-                      <span>卒業後も永久サポート</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <FaCheckCircle className="text-green-400" />
-                      <span>先輩エンジニアとの1on1</span>
-                    </li>
-                  </ul>
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* Curriculum */}
-        <section className="py-20 bg-gray-900">
-          <div className="container mx-auto px-4">
-            <motion.div
-              initial="initial"
-              whileInView="animate"
-              viewport={{ once: true }}
-              variants={fadeInUp}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                何を
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-                  学ぶの？
-                </span>
-              </h2>
-              <p className="text-xl text-gray-400">
-                最新技術をガンガン触って、実務レベルまで引き上げる
-              </p>
             </motion.div>
 
             <div className="max-w-4xl mx-auto">
-              <motion.div
-                className="space-y-4"
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true }}
-                variants={staggerContainer}
-              >
-                {[
-                  {
-                    week: 'Week 1-4',
-                    title: 'フロントエンド基礎',
-                    tech: 'HTML/CSS/JavaScript + React/Next.js',
-                    project: 'ポートフォリオサイト作成',
-                  },
-                  {
-                    week: 'Week 5-8',
-                    title: 'バックエンド開発',
-                    tech: 'Node.js + Express + MongoDB/PostgreSQL',
-                    project: 'REST API & GraphQL実装',
-                  },
-                  {
-                    week: 'Week 9-10',
-                    title: 'インフラ・DevOps',
-                    tech: 'Docker + AWS + GitHub Actions',
-                    project: '自動デプロイ環境構築',
-                  },
-                  {
-                    week: 'Week 11-12',
-                    title: 'AI連携 & 実務体験',
-                    tech: 'OpenAI API + Vercel + オフショア開発',
-                    project: 'AIチャットボット開発',
-                  },
-                ].map((item, index) => (
-                  <motion.div
-                    key={index}
-                    variants={fadeInUp}
-                    className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300 group"
+              <div className="relative aspect-video bg-gray-900 rounded-2xl overflow-hidden group">
+                <Image
+                  src="/api/placeholder/896/504"
+                  alt="Video thumbnail"
+                  width={896}
+                  height={504}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                  <a
+                    href="https://youtube.com/watch?v=demo"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => trackEvent('click', 'video', 'intro-video')}
+                    className="bg-white/20 backdrop-blur-md rounded-full p-6 hover:bg-white/30 transition-all duration-300 group-hover:scale-110"
                   >
-                    <div className="flex flex-col md:flex-row md:items-center justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <span className="text-sm font-bold bg-gradient-to-r from-purple-600 to-pink-600 px-3 py-1 rounded-full">
-                            {item.week}
-                          </span>
-                          <h3 className="text-xl font-bold">{item.title}</h3>
-                        </div>
-                        <p className="text-gray-400 mb-2">{item.tech}</p>
-                        <p className="text-sm text-purple-400">💻 {item.project}</p>
-                      </div>
-                      <div className="mt-4 md:mt-0">
-                        <div className="w-20 h-20 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
-                          <FaCode className="text-3xl text-purple-400" />
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
+                    <FaPlay className="text-3xl text-white ml-1" />
+                  </a>
+                </div>
+              </div>
+              <div className="mt-6 text-center">
+                <a
+                  href="https://youtube.com/@offshoreflow"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent('click', 'youtube', 'channel')}
+                  className="inline-flex items-center gap-2 text-gray-400 hover:text-purple-400 transition-colors"
+                >
+                  <FaYoutube />
+                  YouTubeチャンネルで他の動画も見る
+                </a>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Success Stories */}
-        <section className="py-20 bg-black">
+        {/* Success Stories with CTA */}
+        <section className="py-20 bg-gray-900">
           <div className="container mx-auto px-4">
             <motion.div
               initial="initial"
@@ -474,7 +469,7 @@ const Home = () => {
               </h2>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-12">
               {[
                 {
                   name: 'Takumi (23歳)',
@@ -483,6 +478,7 @@ const Home = () => {
                   salary: '年収450万',
                   comment: 'まじで人生変わった。コード書くの楽しすぎて毎日が充実してる！',
                   avatar: 'T',
+                  caseId: 'takumi-23',
                 },
                 {
                   name: 'Yui (26歳)',
@@ -491,6 +487,7 @@ const Home = () => {
                   salary: '年収600万',
                   comment: '女性エンジニアの仲間もたくさんできて、キャリアの選択肢が広がった！',
                   avatar: 'Y',
+                  caseId: 'yui-26',
                 },
               ].map((story, index) => (
                 <motion.div
@@ -517,22 +514,54 @@ const Home = () => {
                       </div>
                     </div>
 
-                    <p className="text-gray-300 italic">&quot;{story.comment}&quot;</p>
+                    <p className="text-gray-300 italic mb-4">&quot;{story.comment}&quot;</p>
 
-                    <div className="flex gap-1 mt-4">
-                      {[...Array(5)].map((_, i) => (
-                        <FaStar key={i} className="text-yellow-400" />
-                      ))}
+                    <div className="flex items-center justify-between">
+                      <div className="flex gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <FaStar key={i} className="text-yellow-400" />
+                        ))}
+                      </div>
+                      <a
+                        href={`/success-stories/${story.caseId}`}
+                        onClick={() => trackEvent('click', 'success-story', story.name)}
+                        className="text-purple-400 hover:text-purple-300 text-sm flex items-center gap-1"
+                      >
+                        詳細を見る <FaArrowRight className="text-xs" />
+                      </a>
                     </div>
                   </div>
                 </motion.div>
               ))}
             </div>
+
+            {/* Success Stories CTA */}
+            <div className="text-center space-y-4">
+              <a
+                href="/success-stories"
+                onClick={() => trackEvent('click', 'cta', 'all-success-stories')}
+                className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+              >
+                <FaBook />
+                他の成功事例を見る
+              </a>
+              <div>
+                <motion.a
+                  href="/contact"
+                  onClick={() => trackEvent('click', 'cta', 'success-stories')}
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold px-6 py-3 rounded-full hover:shadow-xl transition-all duration-300"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  あなたも成功者になる
+                </motion.a>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Pricing */}
-        <section className="py-20 bg-gray-900">
+        {/* Pricing with Clear CTAs */}
+        <section className="py-20 bg-black">
           <div className="container mx-auto px-4">
             <motion.div
               initial="initial"
@@ -550,7 +579,7 @@ const Home = () => {
               <p className="text-xl text-gray-400">自分のペースに合わせて選べる3つのプラン</p>
             </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-12">
               {[
                 {
                   name: 'スタンダード',
@@ -563,6 +592,8 @@ const Home = () => {
                     'ポートフォリオ作成支援',
                   ],
                   popular: false,
+                  cta: 'このプランで始める',
+                  ctaLink: '/contact?plan=standard',
                 },
                 {
                   name: 'プレミアム',
@@ -576,6 +607,8 @@ const Home = () => {
                     '実務プロジェクト参加',
                   ],
                   popular: true,
+                  cta: '人気No.1プランで始める',
+                  ctaLink: '/contact?plan=premium',
                 },
                 {
                   name: 'ブートキャンプ',
@@ -589,6 +622,8 @@ const Home = () => {
                     '卒業後も永久サポート',
                   ],
                   popular: false,
+                  cta: '最速で転職する',
+                  ctaLink: '/contact?plan=bootcamp',
                 },
               ].map((plan, index) => (
                 <motion.div
@@ -608,7 +643,7 @@ const Home = () => {
                   <div
                     className={`bg-gray-800 rounded-3xl p-8 h-full border ${
                       plan.popular ? 'border-yellow-500' : 'border-gray-700'
-                    } hover:border-purple-500 transition-all duration-300`}
+                    } hover:border-purple-500 transition-all duration-300 flex flex-col`}
                   >
                     <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
                     <p className="text-3xl font-bold mb-1 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
@@ -616,7 +651,7 @@ const Home = () => {
                     </p>
                     <p className="text-gray-400 text-sm mb-6">{plan.duration}</p>
 
-                    <ul className="space-y-3 mb-8">
+                    <ul className="space-y-3 mb-8 flex-grow">
                       {plan.features.map((feature, i) => (
                         <li key={i} className="flex items-start gap-2">
                           <FaCheckCircle className="text-green-400 mt-1 flex-shrink-0" />
@@ -625,26 +660,41 @@ const Home = () => {
                       ))}
                     </ul>
 
-                    <motion.button
+                    <motion.a
+                      href={plan.ctaLink}
+                      onClick={() => trackEvent('click', 'pricing', plan.name)}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className={`w-full py-3 rounded-full font-bold transition-all duration-300 ${
+                      className={`block text-center py-3 rounded-full font-bold transition-all duration-300 ${
                         plan.popular
                           ? 'bg-gradient-to-r from-yellow-400 to-orange-600 text-black hover:shadow-lg hover:shadow-orange-500/25'
                           : 'bg-gray-700 hover:bg-gray-600 text-white'
                       }`}
                     >
-                      このプランで始める
-                    </motion.button>
+                      {plan.cta}
+                    </motion.a>
                   </div>
                 </motion.div>
               ))}
             </div>
+
+            {/* Pricing Additional Info */}
+            <div className="text-center space-y-4">
+              <p className="text-gray-400">どのプランがいいか迷ってる？</p>
+              <a
+                href="/pricing-consultation"
+                onClick={() => trackEvent('click', 'cta', 'pricing-consultation')}
+                className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+              >
+                <FaLightbulb />
+                無料でプラン相談する
+              </a>
+            </div>
           </div>
         </section>
 
-        {/* FAQ */}
-        <section className="py-20 bg-black">
+        {/* FAQ with Links */}
+        <section className="py-20 bg-gray-900">
           <div className="container mx-auto px-4">
             <motion.div
               initial="initial"
@@ -661,23 +711,27 @@ const Home = () => {
               </h2>
             </motion.div>
 
-            <div className="max-w-3xl mx-auto space-y-4">
+            <div className="max-w-3xl mx-auto space-y-4 mb-12">
               {[
                 {
                   q: '完全未経験でも大丈夫？',
                   a: 'もちろん！受講生の8割が未経験スタート。基礎の基礎から丁寧に教えます。',
+                  link: { text: 'カリキュラム詳細', url: '/curriculum' },
                 },
                 {
                   q: '仕事しながらでも続けられる？',
                   a: '週15-20時間の学習時間が目安。録画授業もあるので、自分のペースでOK！',
+                  link: { text: '学習スケジュール例', url: '/schedule-examples' },
                 },
                 {
                   q: '他のスクールとの違いは？',
                   a: '実際のオフショア開発を体験できるのはうちだけ。グローバルで活躍できるエンジニアになれます。',
+                  link: { text: '他社比較表', url: '/comparison' },
                 },
                 {
                   q: '転職サポートの内容は？',
                   a: '履歴書添削、ポートフォリオ作成、面接練習、企業紹介まで完全サポート。内定まで伴走します。',
+                  link: { text: '転職実績', url: '/career-success' },
                 },
               ].map((faq, index) => (
                 <motion.div
@@ -686,22 +740,112 @@ const Home = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-gray-900 rounded-2xl p-6 border border-gray-800 hover:border-purple-500 transition-all duration-300"
+                  className="bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-purple-500 transition-all duration-300"
                 >
                   <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
                     <span className="text-purple-400">Q.</span>
                     {faq.q}
                   </h3>
-                  <p className="text-gray-400 pl-6">
+                  <p className="text-gray-400 pl-6 mb-2">
                     <span className="text-purple-400">A.</span> {faq.a}
                   </p>
+                  {faq.link && (
+                    <a
+                      href={faq.link.url}
+                      onClick={() => trackEvent('click', 'faq-link', faq.link.text)}
+                      className="pl-6 text-sm text-purple-400 hover:text-purple-300 inline-flex items-center gap-1"
+                    >
+                      {faq.link.text} <FaArrowRight className="text-xs" />
+                    </a>
+                  )}
                 </motion.div>
               ))}
+            </div>
+
+            {/* FAQ CTA */}
+            <div className="text-center space-y-4">
+              <p className="text-gray-400">解決しない疑問がある？</p>
+              <motion.a
+                href="/contact"
+                onClick={() => trackEvent('click', 'cta', 'faq')}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold px-6 py-3 rounded-full hover:shadow-xl transition-all duration-300"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                直接質問する
+              </motion.a>
             </div>
           </div>
         </section>
 
-        {/* Final CTA */}
+        {/* Community Section */}
+        <section className="py-20 bg-black">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial="initial"
+              whileInView="animate"
+              viewport={{ once: true }}
+              variants={fadeInUp}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                仲間と一緒に
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-600">
+                  成長しよう
+                </span>
+              </h2>
+              <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+                500人以上の仲間が待ってる。質問し放題、モチベーション維持も楽勝！
+              </p>
+            </motion.div>
+
+            <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
+              <motion.a
+                href="https://discord.gg/offshoreflow"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackEvent('click', 'community', 'discord')}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl p-8 hover:shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 group"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  <FaDiscord className="text-4xl" />
+                  <h3 className="text-2xl font-bold">Discord コミュニティ</h3>
+                </div>
+                <p className="text-gray-200 mb-4">
+                  24/7でエンジニアと繋がれる。質問・雑談・もくもく会など盛りだくさん！
+                </p>
+                <span className="inline-flex items-center gap-2 text-white font-semibold group-hover:gap-3 transition-all">
+                  今すぐ参加 <FaArrowRight />
+                </span>
+              </motion.a>
+
+              <motion.a
+                href="/community-events"
+                onClick={() => trackEvent('click', 'community', 'events')}
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="bg-gradient-to-br from-pink-600 to-orange-600 rounded-2xl p-8 hover:shadow-2xl hover:shadow-orange-500/25 transition-all duration-300 group"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  <FaComments className="text-4xl" />
+                  <h3 className="text-2xl font-bold">定期イベント</h3>
+                </div>
+                <p className="text-gray-200 mb-4">
+                  週1の勉強会、月1のハッカソン、交流会など楽しいイベント満載！
+                </p>
+                <span className="inline-flex items-center gap-2 text-white font-semibold group-hover:gap-3 transition-all">
+                  イベント一覧 <FaArrowRight />
+                </span>
+              </motion.a>
+            </div>
+          </div>
+        </section>
+
+        {/* Final CTA Section with Multiple Options */}
         <section id="cta" className="py-24 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-pink-800 to-orange-700 opacity-50" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]" />
@@ -726,9 +870,11 @@ const Home = () => {
                 まずは無料カウンセリングで話を聞いてみよう 🚀
               </p>
 
+              {/* Main CTA */}
               <motion.a
                 href="/contact"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-600 text-black font-black px-10 py-5 rounded-full text-lg hover:shadow-2xl hover:shadow-orange-500/25 transform hover:scale-105 transition-all duration-300"
+                onClick={() => trackEvent('click', 'cta', 'final-main')}
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-yellow-400 to-orange-600 text-black font-black px-10 py-5 rounded-full text-lg hover:shadow-2xl hover:shadow-orange-500/25 transform hover:scale-105 transition-all duration-300 mb-6"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -736,32 +882,83 @@ const Home = () => {
                 <FaRocket />
               </motion.a>
 
-              <p className="mt-6 text-gray-400">
+              <p className="text-gray-400 mb-8">
                 ※ 無理な勧誘は一切しません。安心してご相談ください。
               </p>
+
+              {/* Sub CTAs */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <Link
+                  href="/download-guide"
+                  onClick={() => trackEvent('click', 'cta', 'final-guide')}
+                  className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-white font-semibold px-6 py-3 rounded-full border border-white/20 hover:bg-white/20 transition-all"
+                >
+                  <FaDownload />
+                  無料ガイドブック
+                </Link>
+                <a
+                  href="https://demo.offshoreflow.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent('click', 'cta', 'final-demo')}
+                  className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-white font-semibold px-6 py-3 rounded-full border border-white/20 hover:bg-white/20 transition-all"
+                >
+                  <FaPlay />
+                  デモを体験
+                </a>
+                <a
+                  href="https://discord.gg/offshoreflow"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent('click', 'cta', 'final-community')}
+                  className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md text-white font-semibold px-6 py-3 rounded-full border border-white/20 hover:bg-white/20 transition-all"
+                >
+                  <FaDiscord />
+                  コミュニティ参加
+                </a>
+              </div>
 
               {/* Social links */}
               <div className="flex justify-center gap-4 mt-8">
                 <motion.a
-                  href="#"
+                  href="https://twitter.com/offshoreflow"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent('click', 'social', 'twitter')}
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/20 transition-all"
                 >
                   <FaTwitter className="text-xl" />
                 </motion.a>
                 <motion.a
-                  href="#"
+                  href="https://discord.gg/offshoreflow"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent('click', 'social', 'discord')}
                   whileHover={{ scale: 1.1, rotate: -5 }}
                   className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/20 transition-all"
                 >
                   <FaDiscord className="text-xl" />
                 </motion.a>
                 <motion.a
-                  href="#"
+                  href="https://github.com/offshoreflow"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent('click', 'social', 'github')}
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/20 transition-all"
                 >
                   <FaGithub className="text-xl" />
+                </motion.a>
+                <motion.a
+                  href="https://youtube.com/@offshoreflow"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackEvent('click', 'social', 'youtube')}
+                  whileHover={{ scale: 1.1, rotate: -5 }}
+                  className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/20 transition-all"
+                >
+                  <FaYoutube className="text-xl" />
                 </motion.a>
               </div>
             </motion.div>
