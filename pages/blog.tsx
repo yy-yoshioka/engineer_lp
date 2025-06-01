@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { GetStaticProps } from 'next';
 import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import { getAllPosts, BlogPost } from '../lib/blog';
 import {
   FaBlog,
   FaCode,
@@ -17,7 +20,11 @@ import {
   FaSearch,
 } from 'react-icons/fa';
 
-const BlogPage = () => {
+interface BlogPageProps {
+  posts: BlogPost[];
+}
+
+const BlogPage = ({ posts }: BlogPageProps) => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -29,113 +36,7 @@ const BlogPage = () => {
     { id: 'tips', name: '学習Tips', icon: FaTools },
   ];
 
-  const blogPosts = [
-    {
-      id: 1,
-      title: '【2024年版】React初心者が最初に学ぶべき10の概念',
-      excerpt:
-        'Reactを始めたばかりの方に向けて、最初に理解すべき重要な概念を分かりやすく解説します。コンポーネント、state、propsなど...',
-      category: 'programming',
-      author: '山田太郎',
-      date: '2024-03-10',
-      readTime: '5分',
-      thumbnail: '/api/placeholder/600/400',
-      tags: ['React', 'JavaScript', '初心者向け'],
-      featured: true,
-    },
-    {
-      id: 2,
-      title: '未経験から3ヶ月でエンジニア転職に成功した私の学習法',
-      excerpt:
-        '営業職から転職して年収150万円アップ。効率的な学習方法と転職活動のコツを実体験を基に詳しくお伝えします。',
-      category: 'success',
-      author: '佐藤花子',
-      date: '2024-03-08',
-      readTime: '8分',
-      thumbnail: '/api/placeholder/600/400',
-      tags: ['転職', '体験談', '学習法'],
-      featured: true,
-    },
-    {
-      id: 3,
-      title: 'TypeScriptを使うべき5つの理由',
-      excerpt:
-        'JavaScriptからTypeScriptへの移行を検討している方へ。型安全性がもたらすメリットと実践的な導入方法を解説。',
-      category: 'programming',
-      author: '鈴木一郎',
-      date: '2024-03-05',
-      readTime: '6分',
-      thumbnail: '/api/placeholder/600/400',
-      tags: ['TypeScript', 'JavaScript', '開発効率'],
-      featured: false,
-    },
-    {
-      id: 4,
-      title: 'エンジニア面接でよく聞かれる技術質問TOP20',
-      excerpt:
-        '実際の面接で頻出する技術的な質問と、その回答例をまとめました。面接対策に必見の内容です。',
-      category: 'career',
-      author: '田中次郎',
-      date: '2024-03-03',
-      readTime: '10分',
-      thumbnail: '/api/placeholder/600/400',
-      tags: ['面接対策', '転職', 'キャリア'],
-      featured: false,
-    },
-    {
-      id: 5,
-      title: '効率的なコードレビューの進め方',
-      excerpt:
-        'チーム開発で重要なコードレビュー。建設的なフィードバックの方法と、レビューを受ける際の心構えについて。',
-      category: 'tips',
-      author: '高橋美咲',
-      date: '2024-02-28',
-      readTime: '7分',
-      thumbnail: '/api/placeholder/600/400',
-      tags: ['チーム開発', 'コードレビュー', 'コミュニケーション'],
-      featured: false,
-    },
-    {
-      id: 6,
-      title: 'Git/GitHubの基本操作完全ガイド',
-      excerpt:
-        'バージョン管理の基礎から、プルリクエストの作成まで。現場で必要なGitの知識を体系的に学べます。',
-      category: 'programming',
-      author: '伊藤健太',
-      date: '2024-02-25',
-      readTime: '12分',
-      thumbnail: '/api/placeholder/600/400',
-      tags: ['Git', 'GitHub', 'バージョン管理'],
-      featured: false,
-    },
-    {
-      id: 7,
-      title: '30代未経験からのエンジニア転職は可能か？',
-      excerpt: '年齢は関係ない！30代で転職に成功した3人の体験談から学ぶ、成功のポイントとは。',
-      category: 'success',
-      author: '中村洋介',
-      date: '2024-02-20',
-      readTime: '9分',
-      thumbnail: '/api/placeholder/600/400',
-      tags: ['30代転職', '未経験', '体験談'],
-      featured: false,
-    },
-    {
-      id: 8,
-      title: 'プログラミング学習のモチベーション維持法',
-      excerpt:
-        '挫折しそうになった時の対処法。継続的に学習を続けるための実践的なテクニックを紹介します。',
-      category: 'tips',
-      author: '小林由美',
-      date: '2024-02-15',
-      readTime: '6分',
-      thumbnail: '/api/placeholder/600/400',
-      tags: ['学習法', 'モチベーション', '継続'],
-      featured: false,
-    },
-  ];
-
-  const filteredPosts = blogPosts.filter((post) => {
+  const filteredPosts = posts.filter((post) => {
     const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory;
     const matchesSearch =
       searchQuery === '' ||
@@ -145,7 +46,7 @@ const BlogPage = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const featuredPosts = blogPosts.filter((post) => post.featured);
+  const featuredPosts = posts.filter((post) => post.featured);
 
   return (
     <>
@@ -228,20 +129,29 @@ const BlogPage = () => {
         </section>
 
         {/* Featured Posts */}
-        {selectedCategory === 'all' && (
+        {selectedCategory === 'all' && featuredPosts.length > 0 && (
           <section className="py-12 bg-gray-900/50">
             <div className="container mx-auto px-4">
               <h2 className="text-2xl font-bold mb-8">注目の記事</h2>
               <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                 {featuredPosts.map((post, index) => (
                   <motion.article
-                    key={post.id}
+                    key={post.slug}
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
                     className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden hover:scale-[1.02] transition-transform"
                   >
-                    <div className="aspect-video bg-gray-700" />
+                    {post.thumbnail && (
+                      <div className="aspect-video relative">
+                        <Image
+                          src={post.thumbnail}
+                          alt={post.title}
+                          layout="fill"
+                          objectFit="cover"
+                        />
+                      </div>
+                    )}
                     <div className="p-6">
                       <div className="flex items-center gap-4 text-sm text-gray-400 mb-3">
                         <span className="flex items-center gap-1">
@@ -250,7 +160,7 @@ const BlogPage = () => {
                         </span>
                         <span className="flex items-center gap-1">
                           <FaClock />
-                          {post.readTime}
+                          {post.readingTime}
                         </span>
                       </div>
                       <h3 className="text-xl font-bold mb-3">{post.title}</h3>
@@ -265,12 +175,11 @@ const BlogPage = () => {
                           </span>
                         ))}
                       </div>
-                      <Link
-                        href={`/blog/${post.id}`}
-                        className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
-                      >
-                        続きを読む
-                        <FaArrowRight />
+                      <Link href={`/blog/${post.slug}`}>
+                        <a className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors">
+                          続きを読む
+                          <FaArrowRight />
+                        </a>
                       </Link>
                     </div>
                   </motion.article>
@@ -296,13 +205,22 @@ const BlogPage = () => {
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {filteredPosts.map((post, index) => (
                     <motion.article
-                      key={post.id}
+                      key={post.slug}
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
                       className="bg-gray-900 rounded-2xl overflow-hidden hover:bg-gray-800 transition-all group"
                     >
-                      <div className="aspect-video bg-gray-800" />
+                      {post.thumbnail && (
+                        <div className="aspect-video relative">
+                          <Image
+                            src={post.thumbnail}
+                            alt={post.title}
+                            layout="fill"
+                            objectFit="cover"
+                          />
+                        </div>
+                      )}
                       <div className="p-6">
                         <div className="flex items-center justify-between text-sm text-gray-400 mb-3">
                           <span className="flex items-center gap-1">
@@ -311,7 +229,7 @@ const BlogPage = () => {
                           </span>
                           <span className="flex items-center gap-1">
                             <FaClock />
-                            {post.readTime}
+                            {post.readingTime}
                           </span>
                         </div>
                         <h3 className="text-lg font-bold mb-2 group-hover:text-purple-400 transition-colors">
@@ -322,11 +240,10 @@ const BlogPage = () => {
                           <span className="text-xs text-gray-500">
                             {new Date(post.date).toLocaleDateString('ja-JP')}
                           </span>
-                          <Link
-                            href={`/blog/${post.id}`}
-                            className="text-purple-400 hover:text-purple-300 transition-colors"
-                          >
-                            <FaArrowRight />
+                          <Link href={`/blog/${post.slug}`}>
+                            <a className="text-purple-400 hover:text-purple-300 transition-colors">
+                              <FaArrowRight />
+                            </a>
                           </Link>
                         </div>
                       </div>
@@ -374,6 +291,16 @@ const BlogPage = () => {
       <Footer />
     </>
   );
+};
+
+export const getStaticProps: GetStaticProps<BlogPageProps> = async () => {
+  const posts = await getAllPosts();
+
+  return {
+    props: {
+      posts,
+    },
+  };
 };
 
 export default BlogPage;
