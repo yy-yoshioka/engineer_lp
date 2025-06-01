@@ -1,5 +1,4 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -16,7 +15,9 @@ import {
 } from 'react-icons/fa';
 import Navigation from '../../components/Navigation';
 import Footer from '../../components/Footer';
+import SEO from '../../components/SEO';
 import { getAllPostSlugs, getPostBySlug, getRelatedPosts, BlogPost } from '../../lib/blog';
+import { generateArticleSchema, generateBreadcrumbSchema } from '../../lib/seo';
 
 interface BlogPostPageProps {
   post: BlogPost;
@@ -37,21 +38,44 @@ export default function BlogPostPage({ post, relatedPosts }: BlogPostPageProps) 
   const shareUrl = `https://offshoreflow.com/blog/${post.slug}`;
   const shareText = `${post.title} - OffshoreFlow Engineer Training`;
 
+  // 構造化データを生成
+  const articleSchema = generateArticleSchema({
+    headline: post.title,
+    description: post.excerpt,
+    author: post.author,
+    datePublished: new Date(post.date).toISOString(),
+    image: post.thumbnail
+      ? `https://offshoreflow.com${post.thumbnail}`
+      : 'https://offshoreflow.com/images/og-default.jpg',
+    url: shareUrl,
+    category: post.category,
+  });
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'ホーム', url: 'https://offshoreflow.com/' },
+    { name: 'ブログ', url: 'https://offshoreflow.com/blog' },
+    { name: post.title, url: shareUrl },
+  ]);
+
+  const combinedSchema = [articleSchema, breadcrumbSchema];
+
   return (
     <>
-      <Head>
-        <title>{post.title} - OffshoreFlow Blog</title>
-        <meta name="description" content={post.excerpt} />
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.excerpt} />
-        <meta property="og:type" content="article" />
-        <meta property="og:url" content={shareUrl} />
-        {post.thumbnail && <meta property="og:image" content={post.thumbnail} />}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={post.title} />
-        <meta name="twitter:description" content={post.excerpt} />
-        {post.thumbnail && <meta name="twitter:image" content={post.thumbnail} />}
-      </Head>
+      <SEO
+        title={post.title}
+        description={post.excerpt}
+        keywords={[...post.tags, 'プログラミング', 'エンジニア', 'ブログ']}
+        ogImage={post.thumbnail}
+        ogType="article"
+        canonicalUrl={shareUrl}
+        structuredData={combinedSchema}
+        article={{
+          publishedTime: new Date(post.date).toISOString(),
+          author: post.author,
+          section: post.category,
+          tags: post.tags,
+        }}
+      />
 
       <div className="min-h-screen bg-gray-900">
         <Navigation />

@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import Head from 'next/head';
 import Link from 'next/link';
+import SEO from '../../components/SEO';
+import { generateCourseSchema } from '../../lib/seo';
 import {
   FaBriefcase,
   FaUserTie,
@@ -15,6 +16,16 @@ import {
 } from 'react-icons/fa';
 
 const CareerSupportPage = () => {
+  // 構造化データを生成
+  const courseSchema = generateCourseSchema({
+    name: '転職サポートプログラム',
+    description: '履歴書添削から面接対策、企業紹介まで完全バックアップする転職支援プログラム',
+    provider: 'OffshoreFlow',
+    url: 'https://offshoreflow.com/services/career-support',
+    price: '49800',
+    duration: 'P3M', // 3ヶ月
+  });
+
   const fadeInUp = {
     initial: { opacity: 0, y: 40 },
     animate: { opacity: 1, y: 0 },
@@ -79,13 +90,24 @@ const CareerSupportPage = () => {
 
   return (
     <>
-      <Head>
-        <title>キャリアサポート - OffshoreFlow</title>
-        <meta
-          name="description"
-          content="OffshoreFlowの充実したキャリアサポート。専任アドバイザーが転職成功まで徹底サポート。転職成功率92%の実績。"
-        />
-      </Head>
+      <SEO
+        title="キャリアサポート - OffshoreFlow"
+        description="OffshoreFlowの充実したキャリアサポート。専任アドバイザーが転職成功まで徹底サポート。転職成功率92%の実績。"
+        keywords={[
+          '転職サポート',
+          'キャリア支援',
+          'エンジニア転職',
+          '転職成功率',
+          '履歴書添削',
+          '面接対策',
+          '企業紹介',
+          '転職エージェント',
+          'IT転職',
+          'プログラマー転職',
+        ]}
+        canonicalUrl="https://offshoreflow.com/services/career-support"
+        structuredData={courseSchema}
+      />
 
       <main className="min-h-screen bg-black text-white">
         {/* Navigation */}

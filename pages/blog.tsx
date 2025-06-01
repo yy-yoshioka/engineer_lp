@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { GetStaticProps } from 'next';
 import { motion } from 'framer-motion';
-import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import SEO from '../components/SEO';
+import { generateWebsiteSchema } from '../lib/seo';
 import { getAllPosts, BlogPost } from '../lib/blog';
 import {
   FaBlog,
@@ -27,6 +28,9 @@ interface BlogPageProps {
 const BlogPage = ({ posts }: BlogPageProps) => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+
+  // 構造化データを生成
+  const websiteSchema = generateWebsiteSchema();
 
   const categories = [
     { id: 'all', name: 'すべて', icon: FaBlog },
@@ -50,13 +54,24 @@ const BlogPage = ({ posts }: BlogPageProps) => {
 
   return (
     <>
-      <Head>
-        <title>ブログ - OffshoreFlow</title>
-        <meta
-          name="description"
-          content="プログラミング学習、キャリア形成、転職成功事例など、エンジニアを目指す方に役立つ情報を発信。"
-        />
-      </Head>
+      <SEO
+        title="ブログ - OffshoreFlow"
+        description="プログラミング学習、キャリア形成、転職成功事例など、エンジニアを目指す方に役立つ情報を発信。"
+        keywords={[
+          'プログラミングブログ',
+          'エンジニア学習',
+          'キャリア形成',
+          '転職成功事例',
+          'プログラミング学習',
+          'エンジニア転職',
+          '学習Tips',
+          'JavaScript',
+          'React',
+          'エンジニア情報',
+        ]}
+        canonicalUrl="https://offshoreflow.com/blog"
+        structuredData={websiteSchema}
+      />
 
       {/* Navigation */}
       <Navigation />

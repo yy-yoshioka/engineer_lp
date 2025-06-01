@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import Head from 'next/head';
 import Link from 'next/link';
+import SEO from '../../components/SEO';
+import { generateCourseSchema } from '../../lib/seo';
 import {
   FaLaptopCode,
   FaGithub,
@@ -23,6 +24,16 @@ const PracticalDevelopmentPage = () => {
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.5 },
   };
+
+  // 構造化データを生成
+  const courseSchema = generateCourseSchema({
+    name: '実践的な開発経験プログラム',
+    description: '現場と同じ環境でチーム開発を経験し、即戦力エンジニアを目指すプログラム',
+    provider: 'OffshoreFlow',
+    url: 'https://offshoreflow.com/services/practical-development',
+    price: '29800',
+    duration: 'P3M', // 3ヶ月
+  });
 
   const technologies = [
     { icon: FaReact, name: 'React', color: 'text-blue-400' },
@@ -82,13 +93,23 @@ const PracticalDevelopmentPage = () => {
 
   return (
     <>
-      <Head>
-        <title>実践的な開発経験 - OffshoreFlow</title>
-        <meta
-          name="description"
-          content="OffshoreFlowの実践的な開発経験プログラム。現場と同じ環境でチーム開発を経験し、即戦力エンジニアを目指します。"
-        />
-      </Head>
+      <SEO
+        title="実践的な開発経験 - OffshoreFlow"
+        description="OffshoreFlowの実践的な開発経験プログラム。現場と同じ環境でチーム開発を経験し、即戦力エンジニアを目指します。"
+        keywords={[
+          '実践的開発',
+          'チーム開発',
+          'プログラミング実習',
+          'エンジニア研修',
+          'Web開発',
+          'フルスタック開発',
+          'React',
+          'Node.js',
+          'プロジェクト開発',
+        ]}
+        canonicalUrl="https://offshoreflow.com/services/practical-development"
+        structuredData={courseSchema}
+      />
 
       <main className="min-h-screen bg-black text-white">
         {/* Navigation */}

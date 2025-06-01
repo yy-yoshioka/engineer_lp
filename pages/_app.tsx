@@ -6,6 +6,13 @@ import { useEffect } from 'react';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 
+// Google Analytics tracking function
+declare global {
+  interface Window {
+    gtag: (command: string, targetId: string, config?: Record<string, unknown>) => void;
+  }
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
@@ -25,14 +32,26 @@ function MyApp({ Component, pageProps }: AppProps) {
       NProgress.done();
     };
 
+    // Google Analytics pageview tracking
+    const handleRouteChange = (url: string) => {
+      // Google Analytics がロードされている場合のみ実行
+      if (typeof window !== 'undefined' && window.gtag) {
+        window.gtag('config', process.env.NEXT_PUBLIC_GA_ID || '', {
+          page_path: url,
+        });
+      }
+    };
+
     router.events.on('routeChangeStart', handleStart);
     router.events.on('routeChangeComplete', handleComplete);
     router.events.on('routeChangeError', handleComplete);
+    router.events.on('routeChangeComplete', handleRouteChange);
 
     return () => {
       router.events.off('routeChangeStart', handleStart);
       router.events.off('routeChangeComplete', handleComplete);
       router.events.off('routeChangeError', handleComplete);
+      router.events.off('routeChangeComplete', handleRouteChange);
     };
   }, [router]);
 

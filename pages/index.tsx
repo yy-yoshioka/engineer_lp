@@ -1,11 +1,12 @@
 // pages/index.tsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import SEO from '../components/SEO';
+import { generateOrganizationSchema, generateWebsiteSchema } from '../lib/seo';
 import {
   FaRocket,
   FaCode,
@@ -52,15 +53,31 @@ const Home = () => {
     console.log('Track:', { action, category, label });
   };
 
+  // 構造化データを生成
+  const organizationSchema = generateOrganizationSchema();
+  const websiteSchema = generateWebsiteSchema();
+  const combinedSchema = [organizationSchema, websiteSchema];
+
   return (
     <>
-      <Head>
-        <title>OffshoreFlow - 3ヶ月で人生変わる、マジで。</title>
-        <meta
-          name="description"
-          content="未経験からフルスタックエンジニアへ。オフショア開発×最新技術で最速キャリアチェンジ"
-        />
-      </Head>
+      <SEO
+        title="OffshoreFlow - 未経験から3ヶ月でエンジニア転職"
+        description="未経験から3ヶ月でエンジニア転職を実現。実践的なプログラミング学習とキャリアサポートで年収600万円以上のエンジニアを目指せます。転職成功率92%の実績。"
+        keywords={[
+          'プログラミング学習',
+          'エンジニア転職',
+          '未経験',
+          'オンライン学習',
+          'キャリアチェンジ',
+          'Web開発',
+          'JavaScript',
+          'React',
+          'Node.js',
+          '転職サポート',
+        ]}
+        canonicalUrl="https://offshoreflow.com/"
+        structuredData={combinedSchema}
+      />
 
       {/* Navigation */}
       <Navigation />

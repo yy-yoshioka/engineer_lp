@@ -1,0 +1,23 @@
+{
+  "name": "OffshoreFlow - エンジニア転職支援",
+  "short_name": "OffshoreFlow",
+  "description": "未経験から3ヶ月でエンジニア転職を実現するプログラミング学習サービス",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#8b5cf6",
+  "background_color": "#000000",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/",
+  "orientation": "portrait-primary"
+}

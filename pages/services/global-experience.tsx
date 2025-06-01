@@ -1,21 +1,33 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import Head from 'next/head';
 import Link from 'next/link';
+import SEO from '../../components/SEO';
+import { generateCourseSchema } from '../../lib/seo';
 import {
   FaGlobe,
-  FaLanguage,
   FaUsers,
-  FaVideo,
+  FaLanguage,
   FaHandshake,
+  FaVideo,
   FaClock,
+  FaMap,
   FaArrowRight,
-  FaMapMarkerAlt,
-  FaChartLine,
-  FaMedal,
+  FaTrophy,
+  FaGraduationCap,
 } from 'react-icons/fa';
 
 const GlobalExperiencePage = () => {
+  // 構造化データを生成
+  const courseSchema = generateCourseSchema({
+    name: 'グローバル開発経験プログラム',
+    description:
+      '世界中のエンジニアとチーム開発を経験し、国際的に活躍できるスキルを身につけるプログラム',
+    provider: 'OffshoreFlow',
+    url: 'https://offshoreflow.com/services/global-experience',
+    price: '49800',
+    duration: 'P3M', // 3ヶ月
+  });
+
   const fadeInUp = {
     initial: { opacity: 0, y: 40 },
     animate: { opacity: 1, y: 0 },
@@ -100,13 +112,23 @@ const GlobalExperiencePage = () => {
 
   return (
     <>
-      <Head>
-        <title>グローバルな開発経験 - OffshoreFlow</title>
-        <meta
-          name="description"
-          content="OffshoreFlowのグローバル開発プログラム。世界中のエンジニアとチーム開発を経験し、国際的に活躍できるスキルを身につけます。"
-        />
-      </Head>
+      <SEO
+        title="グローバルな開発経験 - OffshoreFlow"
+        description="OffshoreFlowのグローバル開発プログラム。世界中のエンジニアとチーム開発を経験し、国際的に活躍できるスキルを身につけます。"
+        keywords={[
+          'グローバル開発',
+          '海外エンジニア',
+          '国際チーム開発',
+          'オフショア開発',
+          '英語でプログラミング',
+          '海外就職',
+          '外資系エンジニア',
+          'リモートワーク',
+          '多国籍チーム',
+        ]}
+        canonicalUrl="https://offshoreflow.com/services/global-experience"
+        structuredData={courseSchema}
+      />
 
       <main className="min-h-screen bg-black text-white">
         {/* Navigation */}
@@ -300,7 +322,7 @@ const GlobalExperiencePage = () => {
                 viewport={{ once: true }}
                 className="bg-gradient-to-br from-blue-900/30 to-purple-900/30 rounded-2xl p-8 border border-blue-800/50"
               >
-                <FaChartLine className="text-4xl text-blue-400 mb-4" />
+                <FaGraduationCap className="text-4xl text-blue-400 mb-4" />
                 <h3 className="text-xl font-bold mb-3">市場価値の向上</h3>
                 <p className="text-gray-300">グローバル経験を持つエンジニアは年収が平均30%高い</p>
               </motion.div>
@@ -312,7 +334,7 @@ const GlobalExperiencePage = () => {
                 transition={{ delay: 0.1 }}
                 className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-2xl p-8 border border-purple-800/50"
               >
-                <FaMapMarkerAlt className="text-4xl text-purple-400 mb-4" />
+                <FaMap className="text-4xl text-purple-400 mb-4" />
                 <h3 className="text-xl font-bold mb-3">働く場所の自由</h3>
                 <p className="text-gray-300">リモートワークで世界中どこからでも仕事ができる</p>
               </motion.div>
@@ -324,7 +346,7 @@ const GlobalExperiencePage = () => {
                 transition={{ delay: 0.2 }}
                 className="bg-gradient-to-br from-pink-900/30 to-orange-900/30 rounded-2xl p-8 border border-pink-800/50"
               >
-                <FaMedal className="text-4xl text-pink-400 mb-4" />
+                <FaTrophy className="text-4xl text-pink-400 mb-4" />
                 <h3 className="text-xl font-bold mb-3">キャリアの可能性</h3>
                 <p className="text-gray-300">外資系企業や海外就職の道が大きく広がる</p>
               </motion.div>

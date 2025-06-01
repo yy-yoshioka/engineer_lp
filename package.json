@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "prepare": "yarn husky install"
+    "prepare": "yarn husky install",
+    "postbuild": "next-sitemap"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
@@ -28,6 +29,7 @@
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "next": "15.3.2",
+    "next-sitemap": "^4.2.3",
     "nprogress": "^0.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
