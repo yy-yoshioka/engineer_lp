@@ -4,6 +4,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import Breadcrumb from '../components/Breadcrumb';
 import {
   FaQuestionCircle,
   FaChevronDown,
@@ -174,6 +175,11 @@ const FAQPage = () => {
             </motion.div>
           </div>
         </section>
+
+        {/* Breadcrumb */}
+        <div className="container mx-auto px-4">
+          <Breadcrumb />
+        </div>
 
         {/* Search Bar */}
         <section className="py-8">

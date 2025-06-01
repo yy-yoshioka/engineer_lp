@@ -46,6 +46,7 @@ const Footer = () => {
       links: [
         { href: '/terms', label: '利用規約' },
         { href: '/privacy', label: 'プライバシーポリシー' },
+        { href: '/sitemap', label: 'サイトマップ' },
       ],
     },
   ];
